@@ -14,11 +14,17 @@ import java.awt.image.WritableRaster;
  * @author Bara Timur
  */
 public class GImage {
-
+    
+    public static final int RED = 1;
+    public static final int GREEN = 2;
+    public static final int BLUE = 3;
+    
+    
     private BufferedImage bufImage;
     private int height;
     private int width;
     private int RGBArray[][];
+    private int HArray[][];
     private Color RGBColorArray[][];
 
     public GImage(BufferedImage bufImage) {
@@ -33,6 +39,12 @@ public class GImage {
 
         RGBArray = new int[height][width];
         RGBColorArray = new Color[height][width];
+        HArray = new int[3][255];
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 255; j++) {
+                HArray[i][j] = 0;
+            }
+        }
     }
 
     private void fillArray() {
@@ -40,7 +52,11 @@ public class GImage {
             for (int j = 0; j < width; j++) {
                 int color = bufImage.getRGB(i, j);
                 RGBArray[i][j] = color;
-                RGBColorArray[i][j] = new Color(color);
+                Color tCol = new Color(color);
+                RGBColorArray[i][j] = tCol;
+                HArray[RED][tCol.getRed()]++;
+                HArray[GREEN][tCol.getGreen()]++;
+                HArray[BLUE][tCol.getBlue()]++;
             }
         }
     }
@@ -74,5 +90,18 @@ public class GImage {
             RGBArray[row][i] = color.getRGB();
             bufImage.setRGB(row, i, color.getRGB());
         }
+    }
+    
+    /**
+     * 
+     * @param color (see static var)
+     * @return array Histogram
+     */
+    public int[] getHistogramArray(int color) {
+        return HArray[color];
+    }
+    
+    public int[][] getHistogram() {
+        return HArray;
     }
 }
