@@ -15,9 +15,9 @@ import java.awt.image.WritableRaster;
  */
 public class GImage {
     
-    public static final int RED = 1;
-    public static final int GREEN = 2;
-    public static final int BLUE = 3;
+    public static final int RED = 0;
+    public static final int GREEN = 1;
+    public static final int BLUE = 2;
     
     
     private BufferedImage bufImage;

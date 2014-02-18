@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import model.GImage;
 
 /**
  *
@@ -26,6 +27,10 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     private void loadPicture(String title, BufferedImage img) {
+        GImage myImage = new GImage(img);
+        for (int i = 0; i < 255; i++) {
+            System.out.println(myImage.getHistogramArray(GImage.RED)[i]);
+        }
         PictureViewer pictureViewer = new PictureViewer(title, img);
         desktopPane.add(pictureViewer);
         pictureViewer.showForm();
