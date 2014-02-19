@@ -80,7 +80,7 @@ public class GImage {
     public void setRGB(int x, int y, Color color) {
         RGBArray[y][x] = color.getRGB();
         RGBColorArray[y][x] = color;
-        bufImage.setRGB(x, y, color.getRGB());
+        bufImage.setRGB(y, x, color.getRGB());
     }
 
     public void setRGB(int row, Color[] rowColor) {
