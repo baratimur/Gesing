@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package helper;
 
 import java.awt.Color;
@@ -15,70 +14,121 @@ import model.GImage;
  *
  * @author Bara Timur
  */
-public class ImageHelper {    
-  
-  public static int[] buildLUT(GImage gi) {
-    int[] lut = new int[256];
-    
-    return lut;
-  }
-  
-  public GImage applyFunction(GImage gi, String func) {    
-    GImage newGImage = new GImage(gi.getBufImage());
-    int height = gi.getBufImage().getHeight();
-    int width = gi.getBufImage().getWidth();
-    
-    //sumbu x pada histogram
-    int aRed;  //base, rgb (0...255)
-    int aGreen;  //base, rgb (0...255)
-    int aBlue;  //base, rgb (0...255)
-    int aAlpha;  //base, rgb (0...255)
+public class ImageHelper {
 
-    if(func=="power") {      
-      int b;   //exponent
-      for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {                
-              aRed = gi.getRGB(i, j).getRed();
-              aGreen = gi.getRGB(i, j).getGreen();
-              aBlue = gi.getRGB(i, j).getBlue();
-              aAlpha = gi.getRGB(i, j).getAlpha();
-              b = 2;
-              
-              int red = (int) Math.pow(aRed, b);
-              int green = (int) Math.pow(aGreen, b);
-              int blue = (int) Math.pow(aBlue, b);
-              int alpha = (int) Math.pow(aAlpha, b);             
-              int newRGB = (new Color(red, green, blue, alpha)).getRGB();
-              Color color = new Color(newRGB);
-              newGImage.setRGB(i, j, color);
-            }
-        }
-    } else if(func=="sin") {      
-      for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {   
-              aRed = gi.getRGB(i, j).getRed();
-              aGreen = gi.getRGB(i, j).getGreen();
-              aBlue = gi.getRGB(i, j).getBlue();
-              aAlpha = gi.getRGB(i, j).getAlpha();
-              
-              int red = (int) Math.sin(aRed);
-              int green = (int) Math.sin(aGreen);
-              int blue = (int) Math.sin(aBlue);
-              int alpha = Math.sin(aAlpha);             
-              int newRGB = (new Color(red, green, blue, alpha)).getRGB();
-              Color color = new Color(newRGB);
-              newGImage.setRGB(i, j, color);
-            }
-        }
+    public static BufferedImage deepCopy(BufferedImage bi) {
+        ColorModel cm = bi.getColorModel();
+        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+        WritableRaster raster = bi.copyData(null);
+        return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
     }
+
+    public static void transformasiSpasial(GImage gimage) {
+        GImage copy = new GImage(deepCopy(gimage.getBufImage()));
+        for (int i = 1; i < gimage.getBufImage().getHeight()-1; i++) {
+            for (int j = 1; j < gimage.getBufImage().getWidth()-1; j++) {
+                gimage.setRGB(i, j, calcAdjArray(getPixel3x3Array(copy, i, j), 2));
+            }
+        }
+
+    }
+
+    private static Color[][] getPixel3x3Array(GImage gimage, int xPos, int yPos) {
+        Color[][] pixelArray = new Color[3][3];
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                pixelArray[i][j] = gimage.getRGB((xPos + i - 1), (yPos + j - 1));
+            }
+        }
+        return pixelArray;
+    }
+
+    /**
+     *
+     * @param pixelArray (3x3 array)
+     * @param processType (1:highFilter | 2:max)
+     * @return new Pixel Value
+     */
+    private static Color calcAdjArray(Color[][] pixelArray, int processType) {
+        switch (processType) {
+            case 1: {
+                int tCol = 0;
+                int sumPlus = 0;
+                for (int k = 0; k < 3; k++) {
+                    for (int l = 0; l < 3; l++) {
+                        if (k == 1 && l == 1) {
+                            //tCol = pixelArray[k][l] * 9;
+                        } else {
+                            //tCol = pixelArray[k][l] * -1;
+                        }
+
+                        sumPlus += tCol;
+                    }
+                }
+                if (sumPlus > 255) {
+                    sumPlus = 255;
+                }
+                if (sumPlus < 0) {
+                    sumPlus = 0;
+                }
+                //return sumPlus;
+                return null;
+            }
+            case 2: {
+                Color max = pixelArray[0][0];
+                int maxR = max.getRed();
+                int maxG = max.getGreen();
+                int maxB = max.getBlue();
+                for (int k = 0; k < 3; k++) {
+                    for (int l = 0; l < 3; l++) {
+                        Color pixel = pixelArray[k][l];
+                        int currR = pixel.getRed();
+                        int currG = pixel.getGreen();
+                        int currB = pixel.getBlue();
+                        if (maxR < currR) {
+                            maxR = currR;
+                        }
+                        if (maxG < currG) {
+                            maxG = currG;
+                        }
+                        if (maxB < currB) {
+                            maxB = currB;
+                        }
+                    }
+                }
+                max = new Color(maxR, maxG, maxB);
+                return max;
+            }
+        }
+        return pixelArray[1][1];
+
+    }        
+
+    public static int[][] buildLUT(GImage gi) {
+      int[][] lut = new int[3][256];      
+      int[][] harray = gi.getHistogram();      
+      for(int i=0; i<lut.length; i++) {
+        int minFreqSum = harray[i][0];
+        int maxFreqSum = getMaxFreqSum(harray[i]);
+        int currentFreqSum = 0;
+        for(int j=0; j<lut[i].length; j++) {          
+          currentFreqSum =+ harray[i][j];
+          lut[i][j] = (currentFreqSum-minFreqSum)  * 255 / (maxFreqSum-minFreqSum);
+        }
+      }
+      return lut;
+    }   
     
-    return newGImage;
-  }    
-  
-  public static BufferedImage deepCopy(BufferedImage bi) {
-      ColorModel cm = bi.getColorModel();
-      boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
-      WritableRaster raster = bi.copyData(null);
-      return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
-}
+    private static int getMaxFreqSum(int[] arr) {
+      int max = arr[0];
+      for(int i=1; i<arr.length; i++) {
+        max+=arr[i];
+      }
+      return max;
+    }
+
+    public static void applyLUT(GImage gi, int[][] lut) {    
+      BufferedImage buff = deepCopy(gi.getBufImage());           
+      
+    }
 }

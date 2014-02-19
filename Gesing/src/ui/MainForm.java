@@ -4,6 +4,7 @@
  */
 package ui;
 
+import helper.ImageHelper;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -11,12 +12,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import model.GImage;
 
 /**
  *
  * @author asus
  */
 public class MainForm extends javax.swing.JFrame {
+
+    File lastFile;
 
     /**
      * Creates new form MainForm
@@ -26,6 +30,7 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     private void loadPicture(String title, BufferedImage img) {
+        GImage myImage = new GImage(img);
         PictureViewer pictureViewer = new PictureViewer(title, img);
         desktopPane.add(pictureViewer);
         pictureViewer.showForm();
@@ -45,6 +50,7 @@ public class MainForm extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         menuLoadImage = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -61,6 +67,15 @@ public class MainForm extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
+
+        jMenuItem1.setText("Transformasi Spasial");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -85,12 +100,25 @@ public class MainForm extends javax.swing.JFrame {
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
                 File selectedFile = chooser.getSelectedFile();
+                lastFile = selectedFile;
                 loadPicture(selectedFile.getName(), ImageIO.read(selectedFile));
             } catch (IOException ex) {
                 Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_menuLoadImageActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        GImage editImage = null;
+        try {
+            editImage = new GImage(ImageIO.read(lastFile));
+        } catch (IOException ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        ImageHelper.transformasiSpasial(editImage);
+        loadPicture(lastFile.getName(), editImage.getBufImage());
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -131,6 +159,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem menuLoadImage;
     // End of variables declaration//GEN-END:variables
 }
