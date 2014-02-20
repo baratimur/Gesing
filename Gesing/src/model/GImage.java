@@ -39,9 +39,9 @@ public class GImage {
 
         RGBArray = new int[height][width];
         RGBColorArray = new Color[height][width];
-        HArray = new int[3][255];
+        HArray = new int[3][256];
         for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 255; j++) {
+            for (int j = 0; j < 256; j++) {
                 HArray[i][j] = 0;
             }
         }
@@ -50,7 +50,7 @@ public class GImage {
     private void fillArray() {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                int color = bufImage.getRGB(i, j);
+                int color = bufImage.getRGB(j, i);
                 RGBArray[i][j] = color;
                 Color tCol = new Color(color);
                 RGBColorArray[i][j] = tCol;
@@ -80,7 +80,7 @@ public class GImage {
     public void setRGB(int x, int y, Color color) {
         RGBArray[y][x] = color.getRGB();
         RGBColorArray[y][x] = color;
-        bufImage.setRGB(y, x, color.getRGB());
+        bufImage.setRGB(x, y, color.getRGB());
     }
 
     public void setRGB(int row, Color[] rowColor) {
