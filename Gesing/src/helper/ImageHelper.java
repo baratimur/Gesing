@@ -128,7 +128,17 @@ public class ImageHelper {
     }
 
     public static void applyLUT(GImage gi, int[][] lut) {    
-      BufferedImage buff = deepCopy(gi.getBufImage());           
-      
+      BufferedImage buff = gi.getBufImage();            
+      for(int i=0; i<buff.getHeight(); i++) {
+        for(int j=0; j<buff.getWidth(); j++) {
+          int currentColor = buff.getRGB(i, j);
+          Color tCol = new Color(currentColor);
+          int oldRed = tCol.getRed();
+          int oldGreen = tCol.getGreen();
+          int oldBlue = tCol.getBlue();
+          Color col = new Color(lut[GImage.RED][oldRed], lut[GImage.GREEN][oldGreen], lut[GImage.BLUE][oldBlue]);
+          gi.setRGB(i, j, col);
+        }
+      }
     }
 }
