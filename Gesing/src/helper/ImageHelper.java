@@ -104,7 +104,7 @@ public class ImageHelper {
 
     }        
 
-    public static int[][] buildLUT(GImage gi) {
+    private static int[][] buildLUT(GImage gi) {
       int[][] lut = new int[3][256];      
       int[][] harray = gi.getHistogram();      
       for(int i=0; i<lut.length; i++) {
@@ -127,7 +127,7 @@ public class ImageHelper {
       return max;
     }
 
-    public static void applyLUT(GImage gi, int[][] lut) {    
+    private static void applyLUT(GImage gi, int[][] lut) {    
       BufferedImage buff = gi.getBufImage();            
       for(int i=0; i<buff.getHeight(); i++) {
         for(int j=0; j<buff.getWidth(); j++) {
@@ -140,5 +140,14 @@ public class ImageHelper {
           gi.setRGB(i, j, col);
         }
       }
+    }
+    
+    public static void transformasiEkualisasi(GImage gi) {
+      int[][] lut = buildLUT(gi);
+      applyLUT(gi, lut);
+    }
+    
+    public static void transformasiSpesifikasi(GImage gi, int[][] lut) {
+      applyLUT(gi, lut);
     }
 }
