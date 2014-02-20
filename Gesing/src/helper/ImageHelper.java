@@ -27,7 +27,7 @@ public class ImageHelper {
         GImage copy = new GImage(deepCopy(gimage.getBufImage()));
         for (int i = 1; i < gimage.getBufImage().getHeight()-1; i++) {
             for (int j = 1; j < gimage.getBufImage().getWidth()-1; j++) {
-                gimage.setRGB(i, j, calcAdjArray(getPixel3x3Array(copy, i, j), 2));
+                gimage.setRGB(j, i, calcAdjArray(getPixel3x3Array(copy, j, i), 2));
             }
         }
 
