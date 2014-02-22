@@ -23,14 +23,22 @@ public class ImageHelper {
         return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
     }
 
-    public static void transformasiSpasial(GImage gimage) {
+    public static void transformasiSpasial(GImage gimage, int type) {
         GImage copy = new GImage(deepCopy(gimage.getBufImage()));
-        for (int i = 1; i < gimage.getBufImage().getHeight()-1; i++) {
-            for (int j = 1; j < gimage.getBufImage().getWidth()-1; j++) {
-                gimage.setRGB(j, i, calcAdjArray(getPixel3x3Array(copy, j, i), 2));
+        for (int i = 1; i < gimage.getBufImage().getHeight() - 1; i++) {
+            for (int j = 1; j < gimage.getBufImage().getWidth() - 1; j++) {
+                gimage.setRGB(j, i, calcAdjArray(getPixel3x3Array(copy, j, i), type));
             }
         }
-
+    }
+    
+    public static void transformasiSpasial(GImage gimage, int[] weight) {
+        GImage copy = new GImage(deepCopy(gimage.getBufImage()));
+        for (int i = 1; i < gimage.getBufImage().getHeight() - 1; i++) {
+            for (int j = 1; j < gimage.getBufImage().getWidth() - 1; j++) {
+                gimage.setRGB(j, i, calcAdjArray(getPixel3x3Array(copy, j, i), weight));
+            }
+        }
     }
 
     private static Color[][] getPixel3x3Array(GImage gimage, int xPos, int yPos) {
@@ -43,36 +51,75 @@ public class ImageHelper {
         return pixelArray;
     }
 
+    private static Color calcAdjArray(Color[][] pixelArray, int[] weight) {
+        int tColR = 0;
+        int tColG = 0;
+        int tColB = 0;
+        int sumPlusR = 0;
+        int sumPlusG = 0;
+        int sumPlusB = 0;
+        int iWeight = 0;
+        for (int k = 0; k < 3; k++) {
+            for (int l = 0; l < 3; l++) {
+                tColR = pixelArray[k][l].getRed() * weight[iWeight];
+                tColG = pixelArray[k][l].getGreen() * weight[iWeight];
+                tColB = pixelArray[k][l].getBlue() * weight[iWeight];
+                iWeight++;
+                sumPlusR += tColR;
+                sumPlusG += tColG;
+                sumPlusB += tColB;
+            }
+        }
+        if (sumPlusR > 255) {
+            sumPlusR = 255;
+        } else if (sumPlusR < 0) {
+            sumPlusR = 0;
+        }
+        if (sumPlusG > 255) {
+            sumPlusG = 255;
+        } else if (sumPlusG < 0) {
+            sumPlusG = 0;
+        }
+        if (sumPlusB > 255) {
+            sumPlusB = 255;
+        } else if (sumPlusB < 0) {
+            sumPlusB = 0;
+        }
+        return new Color(sumPlusR, sumPlusG, sumPlusB);
+    }
+
     /**
      *
      * @param pixelArray (3x3 array)
-     * @param processType (1:highFilter | 2:max)
+     * @param processType (1:min | 2:max | 3:ave)
      * @return new Pixel Value
      */
     private static Color calcAdjArray(Color[][] pixelArray, int processType) {
         switch (processType) {
             case 1: {
-                int tCol = 0;
-                int sumPlus = 0;
+                Color max = pixelArray[0][0];
+                int maxR = max.getRed();
+                int maxG = max.getGreen();
+                int maxB = max.getBlue();
                 for (int k = 0; k < 3; k++) {
                     for (int l = 0; l < 3; l++) {
-                        if (k == 1 && l == 1) {
-                            //tCol = pixelArray[k][l] * 9;
-                        } else {
-                            //tCol = pixelArray[k][l] * -1;
+                        Color pixel = pixelArray[k][l];
+                        int currR = pixel.getRed();
+                        int currG = pixel.getGreen();
+                        int currB = pixel.getBlue();
+                        if (maxR > currR) {
+                            maxR = currR;
                         }
-
-                        sumPlus += tCol;
+                        if (maxG > currG) {
+                            maxG = currG;
+                        }
+                        if (maxB > currB) {
+                            maxB = currB;
+                        }
                     }
                 }
-                if (sumPlus > 255) {
-                    sumPlus = 255;
-                }
-                if (sumPlus < 0) {
-                    sumPlus = 0;
-                }
-                //return sumPlus;
-                return null;
+                max = new Color(maxR, maxG, maxB);
+                return max;
             }
             case 2: {
                 Color max = pixelArray[0][0];
@@ -99,55 +146,108 @@ public class ImageHelper {
                 max = new Color(maxR, maxG, maxB);
                 return max;
             }
+            case 3: {
+                int sumR = 0;
+                int sumG = 0;
+                int sumB = 0;
+                for (int k = 0; k < 3; k++) {
+                    for (int l = 0; l < 3; l++) {
+                        Color pixel = pixelArray[k][l];
+                        sumR += pixel.getRed();
+                        sumG += pixel.getGreen();
+                        sumB += pixel.getBlue();
+                    }
+                }
+                return new Color((sumR / 9), (sumG / 9), (sumB / 9));
+            }
         }
         return pixelArray[1][1];
 
-    }        
+    }
 
-    private static int[][] buildLUT(GImage gi) {
-      int[][] lut = new int[3][256];      
-      int[][] harray = gi.getHistogram();      
-      for(int i=0; i<lut.length; i++) {
-        int minFreqSum = harray[i][0];
-        int maxFreqSum = getMaxFreqSum(harray[i]);
-        int currentFreqSum = 0;
-        for(int j=0; j<lut[i].length; j++) {          
-          currentFreqSum =+ harray[i][j];
-          lut[i][j] = (currentFreqSum-minFreqSum)  * 255 / (maxFreqSum-minFreqSum);
+    public static int[][] buildLUT(GImage gi) {
+        int[][] lut = new int[3][256];
+        int[][] harray = gi.getHistogram();
+        for (int i = 0; i < lut.length; i++) {
+            int minFreqSum = harray[i][0];
+            int maxFreqSum = getMaxFreqSum(harray[i]);
+            int currentFreqSum = 0;
+            for (int j = 0; j < lut[i].length; j++) {
+                currentFreqSum += harray[i][j];
+                lut[i][j] = (currentFreqSum - minFreqSum) * 255 / (maxFreqSum - minFreqSum);
+            }
         }
-      }
-      return lut;
-    }   
-    
+        return lut;
+    }
+
     private static int getMaxFreqSum(int[] arr) {
-      int max = arr[0];
-      for(int i=1; i<arr.length; i++) {
-        max+=arr[i];
-      }
-      return max;
+        int max = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            max += arr[i];
+        }
+        return max;
     }
 
-    private static void applyLUT(GImage gi, int[][] lut) {    
-      BufferedImage buff = gi.getBufImage();            
-      for(int i=0; i<buff.getHeight(); i++) {
-        for(int j=0; j<buff.getWidth(); j++) {
-          int currentColor = buff.getRGB(i, j);
-          Color tCol = new Color(currentColor);
-          int oldRed = tCol.getRed();
-          int oldGreen = tCol.getGreen();
-          int oldBlue = tCol.getBlue();
-          Color col = new Color(lut[GImage.RED][oldRed], lut[GImage.GREEN][oldGreen], lut[GImage.BLUE][oldBlue]);
-          gi.setRGB(i, j, col);
+    private static void applyLUT(GImage gi, int[][] lut) {
+        BufferedImage buff = gi.getBufImage();
+        for (int i = 0; i < buff.getHeight(); i++) {
+            for (int j = 0; j < buff.getWidth(); j++) {
+                int currentColor = buff.getRGB(j, i);
+                Color tCol = new Color(currentColor);
+                int oldRed = tCol.getRed();
+                int oldGreen = tCol.getGreen();
+                int oldBlue = tCol.getBlue();
+
+                Color col = new Color(lut[GImage.RED][oldRed], lut[GImage.GREEN][oldGreen], lut[GImage.BLUE][oldBlue]);
+                gi.setRGB(j, i, col);
+            }
         }
-      }
     }
-    
+
+    private static void flood(GImage img, boolean[][] mark,
+            int row, int col, Color srcColor, Color tgtColor) {
+        // make sure row and col are inside the image
+        if (row < 0) {
+            return;
+        }
+        if (col < 0) {
+            return;
+        }
+        if (row >= img.getBufImage().getHeight()) {
+            return;
+        }
+        if (col >= img.getBufImage().getWidth()) {
+            return;
+        }
+
+        // make sure this pixel hasn't been visited yet
+        if (mark[row][col]) {
+            return;
+        }
+
+        // make sure this pixel is the right color to fill
+        if (!img.getRGB(col, row).equals(srcColor)) {
+            return;
+        }
+
+        // fill pixel with target color and mark it as visited
+        img.setRGB(col, row, tgtColor);
+        mark[row][col] = true;
+
+        // recursively fill surrounding pixels
+        // (this is equivelant to depth-first search)
+        flood(img, mark, row - 1, col, srcColor, tgtColor);
+        flood(img, mark, row + 1, col, srcColor, tgtColor);
+        flood(img, mark, row, col - 1, srcColor, tgtColor);
+        flood(img, mark, row, col + 1, srcColor, tgtColor);
+    }
+
     public static void transformasiEkualisasi(GImage gi) {
-      int[][] lut = buildLUT(gi);
-      applyLUT(gi, lut);
+        int[][] lut = buildLUT(gi);
+        applyLUT(gi, lut);
     }
-    
+
     public static void transformasiSpesifikasi(GImage gi, int[][] lut) {
-      applyLUT(gi, lut);
+        applyLUT(gi, lut);
     }
 }
