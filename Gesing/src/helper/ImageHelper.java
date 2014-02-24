@@ -243,17 +243,21 @@ public class ImageHelper {
         flood(img, mark, row, col + 1, srcColor, tgtColor);
     }
     
-    public static ArrayList< ArrayList<String> > recognizeObject(GImage gi) {
+    public static ArrayList< ArrayList<String> > recognizeObjects(GImage gi, boolean[][] mark) {
       ArrayList< ArrayList<String> > stringObjList = new ArrayList<>();
       BufferedImage buff = gi.getBufImage();      
       int width = buff.getWidth();
       int height = buff.getHeight();      
+      mark = new boolean[width][height];
       for (int i=0; i<height; i++) {
         for (int j=0; j<width; j++) {
           Color col = gi.getRGB(j, i);
           int red = col.getRed();
-          if (!isWhite(gi, j, i)) {
-            roundObject(gi, j, i);
+          mark[j][i] = true;
+          if (!isWhite(gi, j, i)) {           
+            ArrayList<String> stringObj = roundObject(gi, j, i);
+            stringObjList.add(stringObj);
+//            flod(gi, )
           }
         }
       }
