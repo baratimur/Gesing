@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
+import java.util.ArrayList;
 import model.GImage;
 
 /**
@@ -15,7 +16,7 @@ import model.GImage;
  * @author Bara Timur
  */
 public class ImageHelper {
-
+  
     public static BufferedImage deepCopy(BufferedImage bi) {
         ColorModel cm = bi.getColorModel();
         boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
@@ -240,6 +241,100 @@ public class ImageHelper {
         flood(img, mark, row + 1, col, srcColor, tgtColor);
         flood(img, mark, row, col - 1, srcColor, tgtColor);
         flood(img, mark, row, col + 1, srcColor, tgtColor);
+    }
+    
+    public static ArrayList< ArrayList<String> > recognizeObject(GImage gi) {
+      ArrayList< ArrayList<String> > stringObjList = new ArrayList<>();
+      BufferedImage buff = gi.getBufImage();      
+      int width = buff.getWidth();
+      int height = buff.getHeight();      
+      for (int i=0; i<height; i++) {
+        for (int j=0; j<width; j++) {
+          Color col = gi.getRGB(j, i);
+          int red = col.getRed();
+          if (!isWhite(gi, j, i)) {
+            roundObject(gi, j, i);
+          }
+        }
+      }
+      
+      return stringObjList;
+    }
+    
+    private static ArrayList<String> roundObject(GImage gi, int startX, int startY) {
+      ArrayList<String> stringObj = new ArrayList<>();      
+      int currentX = startX;
+      int currentY = startY;      
+      int prevX = currentX;
+      int prevY = currentY;
+      do {        
+        currentY--;
+        if (!isWhite(gi, currentX, currentY) && isWhite(gi, currentX-1, currentY) && (currentX != prevX || currentY != prevY)) { //arah 1                  
+          stringObj.add("1"); 
+          prevY = currentY + 1;
+        } else {
+          currentX++;
+          if (!isWhite(gi, currentX, currentY) && isWhite(gi, currentX-1, currentY) && (currentX != prevX || currentY != prevY)) { //arah 2
+            stringObj.add("2");
+            prevX = currentX - 1;
+            prevY = currentY + 1;
+          } else {            
+            currentY++;
+            if (!isWhite(gi, currentX, currentY) && isWhite(gi, currentX, currentY-1) && (currentX != prevX || currentY != prevY)) { //arah 3
+              stringObj.add("3");
+              prevX = currentX - 1;              
+            } else {
+              currentY++;
+              if (!isWhite(gi, currentX, currentY) && isWhite(gi, currentX, currentY-1) && (currentX != prevX || currentY != prevY)) { //arah 4
+                stringObj.add("4");
+                prevX = currentX - 1;
+                prevY = currentY - 1;
+              } else {
+                currentX--;
+                if (!isWhite(gi, currentX, currentY) && isWhite(gi, currentX+1, currentY) && (currentX != prevX || currentY != prevY)) { //arah 5
+                  stringObj.add("5");
+                  prevY = currentY - 1;
+                } else {
+                  currentX--;
+                  if (!isWhite(gi, currentX, currentY) && isWhite(gi, currentX+1, currentY) && (currentX != prevX || currentY != prevY)) { //arah 6
+                    stringObj.add("6");
+                    prevX = currentX + 1;
+                    prevY = currentY - 1;
+                  } else {
+                    currentY++;
+                    if (!isWhite(gi, currentX, currentY) && isWhite(gi, currentX, currentY+1) && (currentX != prevX || currentY != prevY)) { //arah 7
+                      stringObj.add("7");
+                      prevX = currentX + 1;
+                    } else {
+                      currentY++;
+                      if (!isWhite(gi, currentX, currentY) && isWhite(gi, currentX, currentY+1) && (currentX != prevX || currentY != prevY)) { //arah 8
+                        stringObj.add("8");
+                        prevX = currentX + 1;
+                        prevY = currentY + 1;
+                      } else {// balik lagi
+                        int tmpPrevX = prevX;
+                        int tmpPrevY = prevY;
+                        prevX = currentX;
+                        prevY = currentY;
+                        currentX = tmpPrevX;
+                        currentY = tmpPrevY;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }        
+      } while (currentX != startX || currentY != startY);
+      
+      
+      return stringObj;
+    }
+    
+    private static Boolean isWhite(GImage gi, int x, int y) {
+      int color = gi.getRGB(x, y).getRed();
+      return (color > 200);
     }
 
     public static void transformasiEkualisasi(GImage gi) {
