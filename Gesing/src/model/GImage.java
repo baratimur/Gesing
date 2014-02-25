@@ -74,7 +74,15 @@ public class GImage {
     }
 
     public Color getRGB(int x, int y) {
-        return RGBColorArray[y][x];
+        try {
+            return RGBColorArray[y][x];
+        } catch(ArrayIndexOutOfBoundsException ex) {
+            System.out.println("x : " + x);
+            System.out.println("y : " + y);
+            System.out.println("widht : " + width);
+            System.out.println("height : " + height);
+            return null;
+        }
     }
 
     public void setRGB(int x, int y, Color color) {
