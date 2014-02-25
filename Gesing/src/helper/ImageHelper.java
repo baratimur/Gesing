@@ -10,6 +10,9 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 import model.GImage;
 
 /**
@@ -206,42 +209,34 @@ public class ImageHelper {
         }
     }
 
-    private static void flood(GImage img, boolean[][] mark,
-            int row, int col, Color srcColor, Color tgtColor) {
-        // make sure row and col are inside the image
-        if (row < 0) {
-            return;
-        }
-        if (col < 0) {
-            return;
-        }
-        if (row >= img.getBufImage().getHeight()) {
-            return;
-        }
-        if (col >= img.getBufImage().getWidth()) {
-            return;
-        }
+    private static void flood(GImage img, boolean[][] mark, int x, int y, Color srcColor, Color tgtColor) {
+        Queue<Point> queue = new LinkedList<Point>();
+        queue.add(new Point(x, y));
 
-        // make sure this pixel hasn't been visited yet
-        if (mark[row][col]) {
-            return;
+        while (!queue.isEmpty()) {
+            Point p = queue.remove();
+
+            if ((p.x >= 0)
+                    && (p.x < img.getBufImage().getWidth()
+                    && (p.y >= 0)
+                    && (p.y < img.getBufImage().getHeight()))) {
+                Color currColor = img.getRGB(p.x, p.y);
+                //System.out.println("color : " + currColor.getRed());
+                if (!mark[p.y][p.x]
+                        && isSameColor(currColor, srcColor)) {
+                    mark[p.y][p.x] = true;
+                    img.setRGB(p.x, p.y, tgtColor);
+                    queue.add(new Point(p.x + 1, p.y));
+                    queue.add(new Point(p.x - 1, p.y));
+                    queue.add(new Point(p.x, p.y + 1));
+                    queue.add(new Point(p.x, p.y - 1));
+                }
+            }
         }
+    }
 
-        // make sure this pixel is the right color to fill
-        if (!img.getRGB(col, row).equals(srcColor)) {
-            return;
-        }
-
-        // fill pixel with target color and mark it as visited
-        img.setRGB(col, row, tgtColor);
-        mark[row][col] = true;
-
-        // recursively fill surrounding pixels
-        // (this is equivelant to depth-first search)
-        flood(img, mark, row - 1, col, srcColor, tgtColor);
-        flood(img, mark, row + 1, col, srcColor, tgtColor);
-        flood(img, mark, row, col - 1, srcColor, tgtColor);
-        flood(img, mark, row, col + 1, srcColor, tgtColor);
+    private static boolean isSameColor(Color colorA, Color colorB) {
+        return colorA.getRed() == colorB.getRed();
     }
 
     public static ArrayList< ArrayList<String>> recognizeObjects(GImage gi) {
@@ -257,7 +252,7 @@ public class ImageHelper {
                 //mark[j][i] = true;
                 if (!isWhite(gi, j, i)) {
                     //ArrayList<String> stringObj = roundObject(gi, j, i);
-                    System.out.println(buildChainCode(gi, j - 1, i));
+                    //System.out.println(buildChainCode(gi, j - 1, i));
                     //stringObjList.add(stringObj);
                     flood(gi, mark, j, i, col, Color.WHITE);
                 }
@@ -265,6 +260,30 @@ public class ImageHelper {
         }
 
         return stringObjList;
+    }
+
+    public static ArrayList<String> getChainCodes(GImage img) {
+        ArrayList<String> chainCodes = new ArrayList<>();
+        BufferedImage buff = img.getBufImage();
+        int width = buff.getWidth();
+        int height = buff.getHeight();
+        boolean[][] mark = new boolean[height][width];
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                Color col = img.getRGB(j, i);
+                int red = col.getRed();
+                //System.out.println("red = " + j + " " + i + " "+ red);
+                //mark[j][i] = true;
+                if (!isWhite(img, j, i)) {
+                    System.out.println("1st pass");
+                    chainCodes.add(ChainCode.build(img, j, i));
+                    System.out.println("2nd pass");
+                    flood(img, mark, j, i, col, Color.WHITE);
+                    System.out.println("3rd pass");
+                }
+            }
+        }
+        return chainCodes;
     }
 
     private static ArrayList<String> roundObject(GImage gi, int startX, int startY) {
@@ -334,41 +353,26 @@ public class ImageHelper {
                 }
             }
         } while (currentX != startX || currentY != startY);
-
-
         return stringObj;
     }
 
-    // 
-    private static String buildChainCode(GImage img, int startX, int startY) {
-        StringBuilder sb = new StringBuilder();
-        Point cur = new Point(startX, startY);
-        Point ahead;
-        do {
-            
-        } while (cur.getX() != startX && cur.getY() != startY);
-        return sb.toString();
-    }
+    public static int countObject(GImage img) {
+        int width = img.getBufImage().getWidth();
+        int height = img.getBufImage().getHeight();
+        int count = 0;
 
-    /*
-     * direction
-     * 3 2 1
-     * 4 x 0
-     * 5 6 7
-     */
-    private static Point moveAgent(Point point, int direction) {
-        Point tP = new Point(point);
-        switch (direction) {
-            case 0 : tP.setLocation(tP.getX()+1, tP.getY()); break;
-            case 1 : tP.setLocation(tP.getX()+1, tP.getY()+1);break;
-            case 2 : tP.setLocation(tP.getX(), tP.getY()+1);break;
-            case 3 : tP.setLocation(tP.getX()-1, tP.getY()+1);break;
-            case 4 : tP.setLocation(tP.getX()-1, tP.getY());break;
-            case 5 : tP.setLocation(tP.getX()-1, tP.getY()-1);break;
-            case 6 : tP.setLocation(tP.getX(), tP.getY()-1);break;
-            case 7 : tP.setLocation(tP.getX()+1, tP.getY()-1);break;
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                int curPixel = img.getRGB(j, i).getRed();
+                if (curPixel == 0) {
+                    boolean[][] mark = new boolean[height][width];
+                    flood(img, mark, j, i, Color.BLACK, Color.RED);
+                    count++;
+                    break;
+                }
+            }
         }
-        return tP;
+        return count;
     }
 
     private static Boolean isWhite(GImage gi, int x, int y) {

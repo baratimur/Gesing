@@ -4,6 +4,7 @@
  */
 package ui;
 
+import helper.ChainCode;
 import helper.FileHelper;
 import helper.ImageHelper;
 import java.awt.BorderLayout;
@@ -71,6 +72,7 @@ public class MainForm extends javax.swing.JFrame {
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -172,6 +174,14 @@ public class MainForm extends javax.swing.JFrame {
         });
         jMenu5.add(jMenuItem9);
 
+        jMenuItem10.setText("Generate Chain Code");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItem10);
+
         jMenuBar1.add(jMenu5);
 
         setJMenuBar(jMenuBar1);
@@ -229,7 +239,7 @@ public class MainForm extends javax.swing.JFrame {
             Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        loadFromFile();
+        loadLUTFromFile();
         ImageHelper.transformasiSpesifikasi(editImage, currLUT);
         loadPicture(lastFile.getName(), editImage.getBufImage());
     }//GEN-LAST:event_jMenuItem4ActionPerformed
@@ -268,14 +278,32 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
-        
-        ArrayList<ArrayList<String>> lists = ImageHelper.recognizeObjects(currImg);
-        for (int i = 0; i < lists.size(); i++) {
-            for (int j = 0; j < lists.get(i).size(); j++) {
-                System.out.println(lists.get(i).get(j));
-            }
+        GImage editImage = null;
+        try {
+            editImage = new GImage(ImageIO.read(lastFile));
+        } catch (IOException ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        System.out.println(ImageHelper.countObject(editImage));
+        loadPicture(lastFile.getName(), editImage.getBufImage());
     }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+         GImage editImage = null;
+        try {
+            editImage = new GImage(ImageIO.read(lastFile));
+        } catch (IOException ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        ArrayList<String> res = ImageHelper.getChainCodes(editImage);
+        for (int i = 0; i < res.size(); i++) {
+            System.out.println(res.get(i));
+        }
+        
+        loadPicture(lastFile.getName(), editImage.getBufImage());
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void loadTranformasiSpasial(int type) {
         GImage editImage = null;
@@ -313,7 +341,7 @@ public class MainForm extends javax.swing.JFrame {
         }
     }
 
-    private void loadFromFile() {
+    private void loadLUTFromFile() {
         for (int i = 0; i < 3; i++) {
             currLUT[i] = FileHelper.parseToLUT(FileHelper.openDoc(i + ".lut"));
         }
@@ -345,7 +373,7 @@ public class MainForm extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -362,6 +390,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
