@@ -11,6 +11,8 @@ package ui;
 public class SettingKetetanggaanDialog extends javax.swing.JDialog {
 
     private int[] wArray;
+    private int[] wArray2;
+    public boolean is2Table = false;
     
     /**
      * Creates new form SettingKetetanggaanDialog
@@ -19,6 +21,7 @@ public class SettingKetetanggaanDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         wArray = new int[9];
+        wArray2 = new int[9];
     }
 
     /**
@@ -40,6 +43,20 @@ public class SettingKetetanggaanDialog extends javax.swing.JDialog {
         w7 = new javax.swing.JTextField();
         w8 = new javax.swing.JTextField();
         btnOK = new javax.swing.JButton();
+        w9 = new javax.swing.JTextField();
+        w10 = new javax.swing.JTextField();
+        w11 = new javax.swing.JTextField();
+        w12 = new javax.swing.JTextField();
+        w13 = new javax.swing.JTextField();
+        w14 = new javax.swing.JTextField();
+        w15 = new javax.swing.JTextField();
+        w16 = new javax.swing.JTextField();
+        w17 = new javax.swing.JTextField();
+        btnOK1 = new javax.swing.JButton();
+        loadSobel = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -73,6 +90,49 @@ public class SettingKetetanggaanDialog extends javax.swing.JDialog {
             }
         });
 
+        w9.setText("-1");
+
+        w10.setText("-1");
+
+        w11.setText("-1");
+        w11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                w11ActionPerformed(evt);
+            }
+        });
+
+        w12.setText("-1");
+
+        w13.setText("9");
+
+        w14.setText("-1");
+
+        w15.setText("-1");
+
+        w16.setText("-1");
+
+        w17.setText("-1");
+
+        btnOK1.setText("OK (2 Table)");
+        btnOK1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOK1ActionPerformed(evt);
+            }
+        });
+
+        loadSobel.setText("Sobel");
+        loadSobel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadSobelActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("jButton1");
+
+        jButton3.setText("jButton1");
+
+        jButton4.setText("jButton1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -80,7 +140,6 @@ public class SettingKetetanggaanDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnOK, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(w3, javax.swing.GroupLayout.Alignment.LEADING)
@@ -92,33 +151,86 @@ public class SettingKetetanggaanDialog extends javax.swing.JDialog {
                             .addComponent(w4, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(w1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(w2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(w8, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
                             .addComponent(w5)
-                            .addComponent(w8))))
+                            .addComponent(w2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(loadSobel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jButton4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                        .addComponent(btnOK, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(w12, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(w9, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(w15, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(w13, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(w10, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(w16))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(w14)
+                            .addComponent(w11, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(w17, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnOK1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(w0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(w1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(w2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(w0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(w1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(w2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(loadSobel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(w3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(w4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(w5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(w6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(w7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(w8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                        .addComponent(jButton4))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(w9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(w10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(w11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(w12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(w13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(w14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(w15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(w16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(w17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(w3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(w4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(w5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(w6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(w7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(w8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnOK)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnOK)
+                    .addComponent(btnOK1))
+                .addContainerGap())
         );
 
         pack();
@@ -131,6 +243,12 @@ public class SettingKetetanggaanDialog extends javax.swing.JDialog {
     public int[] getwArray() {
         return wArray;
     }
+
+    public int[] getwArray2() {
+        return wArray2;
+    }
+    
+    
     
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
         wArray[0] = Integer.parseInt(w0.getText());
@@ -144,6 +262,56 @@ public class SettingKetetanggaanDialog extends javax.swing.JDialog {
         wArray[8] = Integer.parseInt(w8.getText());
         this.setVisible(false);
     }//GEN-LAST:event_btnOKActionPerformed
+
+    private void w11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_w11ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_w11ActionPerformed
+
+    private void btnOK1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOK1ActionPerformed
+        wArray[0] = Integer.parseInt(w0.getText());
+        wArray[1] = Integer.parseInt(w1.getText());
+        wArray[2] = Integer.parseInt(w2.getText());
+        wArray[3] = Integer.parseInt(w3.getText());
+        wArray[4] = Integer.parseInt(w4.getText());
+        wArray[5] = Integer.parseInt(w5.getText());
+        wArray[6] = Integer.parseInt(w6.getText());
+        wArray[7] = Integer.parseInt(w7.getText());
+        wArray[8] = Integer.parseInt(w8.getText());
+        wArray2[0] = Integer.parseInt(w9.getText());
+        wArray2[1] = Integer.parseInt(w10.getText());
+        wArray2[2] = Integer.parseInt(w11.getText());
+        wArray2[3] = Integer.parseInt(w12.getText());
+        wArray2[4] = Integer.parseInt(w13.getText());
+        wArray2[5] = Integer.parseInt(w14.getText());
+        wArray2[6] = Integer.parseInt(w15.getText());
+        wArray2[7] = Integer.parseInt(w16.getText());
+        wArray2[8] = Integer.parseInt(w17.getText());
+
+        this.is2Table = true;
+        this.setVisible(false);
+    }//GEN-LAST:event_btnOK1ActionPerformed
+
+    private void loadSobelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadSobelActionPerformed
+        w0.setText("1");
+        w1.setText("2");
+        w2.setText("1");
+        w3.setText("0");
+        w4.setText("0");
+        w5.setText("0");
+        w6.setText("-1");
+        w7.setText("-2");
+        w8.setText("-1");
+        
+        w9.setText("-1");
+        w10.setText("0");
+        w11.setText("1");
+        w12.setText("-2");
+        w13.setText("0");
+        w14.setText("2");
+        w15.setText("-1");
+        w16.setText("0");
+        w17.setText("1");
+    }//GEN-LAST:event_loadSobelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -188,8 +356,21 @@ public class SettingKetetanggaanDialog extends javax.swing.JDialog {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOK;
+    private javax.swing.JButton btnOK1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton loadSobel;
     private javax.swing.JTextField w0;
     private javax.swing.JTextField w1;
+    private javax.swing.JTextField w10;
+    private javax.swing.JTextField w11;
+    private javax.swing.JTextField w12;
+    private javax.swing.JTextField w13;
+    private javax.swing.JTextField w14;
+    private javax.swing.JTextField w15;
+    private javax.swing.JTextField w16;
+    private javax.swing.JTextField w17;
     private javax.swing.JTextField w2;
     private javax.swing.JTextField w3;
     private javax.swing.JTextField w4;
@@ -197,5 +378,6 @@ public class SettingKetetanggaanDialog extends javax.swing.JDialog {
     private javax.swing.JTextField w6;
     private javax.swing.JTextField w7;
     private javax.swing.JTextField w8;
+    private javax.swing.JTextField w9;
     // End of variables declaration//GEN-END:variables
 }

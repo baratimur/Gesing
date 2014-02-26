@@ -14,12 +14,10 @@ import java.awt.image.WritableRaster;
  * @author Bara Timur
  */
 public class GImage {
-    
+
     public static final int RED = 0;
     public static final int GREEN = 1;
     public static final int BLUE = 2;
-    
-    
     private BufferedImage bufImage;
     private int height;
     private int width;
@@ -31,6 +29,14 @@ public class GImage {
         this.bufImage = bufImage;
         init();
         fillArray();
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
     }
 
     private void init() {
@@ -76,7 +82,7 @@ public class GImage {
     public Color getRGB(int x, int y) {
         try {
             return RGBColorArray[y][x];
-        } catch(ArrayIndexOutOfBoundsException ex) {
+        } catch (ArrayIndexOutOfBoundsException ex) {
             System.out.println("x : " + x);
             System.out.println("y : " + y);
             System.out.println("widht : " + width);
@@ -94,21 +100,21 @@ public class GImage {
     public void setRGB(int row, Color[] rowColor) {
         RGBColorArray[row] = rowColor;
         for (int i = 0; i < width; i++) {
-            Color color =  rowColor[i];
+            Color color = rowColor[i];
             RGBArray[row][i] = color.getRGB();
             bufImage.setRGB(row, i, color.getRGB());
         }
     }
-    
+
     /**
-     * 
+     *
      * @param color (see static var)
      * @return array Histogram
      */
     public int[] getHistogramArray(int color) {
         return HArray[color];
     }
-    
+
     public int[][] getHistogram() {
         return HArray;
     }

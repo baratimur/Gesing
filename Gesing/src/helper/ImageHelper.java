@@ -275,11 +275,11 @@ public class ImageHelper {
                 //System.out.println("red = " + j + " " + i + " "+ red);
                 //mark[j][i] = true;
                 if (!isWhite(img, j, i)) {
-                    System.out.println("1st pass");
+                    //System.out.println("1st pass");
                     chainCodes.add(ChainCode.build(img, j, i));
-                    System.out.println("2nd pass");
+                    //System.out.println("2nd pass");
                     flood(img, mark, j, i, col, Color.WHITE);
-                    System.out.println("3rd pass");
+                    //System.out.println("3rd pass");
                 }
             }
         }
@@ -387,5 +387,42 @@ public class ImageHelper {
 
     public static void transformasiSpesifikasi(GImage gi, int[][] lut) {
         applyLUT(gi, lut);
+    }
+
+    public static void combineGradien(GImage img1, GImage img2) {
+        for (int i = 0; i < img1.getHeight() ; i++) {
+            for (int j = 0; j < img1.getWidth(); j++) {
+                Color col1 = img1.getRGB(j, i);
+                Color col2 = img2.getRGB(j, i);
+                img1.setRGB(j, i, combineColor(col1, col2));
+            }
+        }
+    }
+    
+    private static Color combineColor(Color col1, Color col2) {
+        int red1 = col1.getRed();
+        int red2 = col2.getRed();
+        int green1 = col1.getGreen();
+        int green2 = col2.getGreen();
+        int blue1 = col1.getBlue();
+        int blue2 = col2.getBlue();
+        return new Color(
+                calcDistLikePhytagoras(red1, red2), 
+                calcDistLikePhytagoras(green1, green2), 
+                calcDistLikePhytagoras(blue1, blue2));
+    }
+    
+    private static int calcDistLikePhytagoras(int num1, int num2) {
+        //System.out.println("num1 = " + num1);
+        //System.out.println("num2 = " + num2);
+        int count = (int) Math.sqrt((num1 * num1) + (num2 * num2));
+        //System.out.println("count = " + count);
+        if(count > 255) {
+            return 255;
+        }
+        if(count < 0) {
+            return 0;
+        }
+        return count;
     }
 }

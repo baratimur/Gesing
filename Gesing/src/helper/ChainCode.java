@@ -6,6 +6,7 @@ package helper;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.util.ArrayList;
 import model.GImage;
 
 /**
@@ -13,6 +14,69 @@ import model.GImage;
  * @author Bara Timur
  */
 public class ChainCode {
+
+    private String codes;
+    private int[] frequency;
+    private int[] frequencyPercentage;
+    private String shape;
+
+    public ChainCode(String codes) {
+        this.codes = codes;
+        frequency = countSum(this.codes);
+        frequencyPercentage = countPercentage(frequency);
+        recognizeShape();
+    }
+
+    private int[] countPercentage(int[] freq) {
+        int[] count = new int[8];
+        int sum = 0;
+        for (int i = 0; i < 8; i++) {
+            count[i] = 0;
+            sum += freq[i];
+        }
+        //System.out.println("sum = " + sum);
+        for (int i = 0; i < 8; i++) {
+            count[i] = (freq[i] * 100) / sum;
+        }
+        return count;
+    }
+
+    private int[] countSum(String codes) {
+        int[] count = new int[9];
+        for (int i = 0; i < 8; i++) {
+            count[i] = 0;
+        }
+        for (int i = 0; i < codes.length(); i++) {
+            count[Integer.parseInt(codes.charAt(i) + "")]++;
+        }
+        return count;
+    }
+
+    private void recognizeShape() {
+        int moreThanOne = 0;
+        for (int i = 0; i < 8; i++) {
+            if (frequencyPercentage[i] > 1) {
+                moreThanOne++;
+            }
+        }
+        if(moreThanOne < 3) {
+            shape = "Line";
+        } else if(moreThanOne == 4) {
+            shape = "Rectangle";
+        } else if(moreThanOne == 5) {
+            shape = "Triangle";
+        } else if (moreThanOne > 5) {
+            shape = "Circle";
+        }
+    }
+
+    public void print() {
+        System.out.println("codes = " + codes);
+        for (int i = 0; i < 8; i++) {
+            System.out.println(i + " : " + this.frequency[i] + " -> " + this.frequencyPercentage[i]);
+        }
+        System.out.println("shape = " + shape);
+    }
 
     public static String build(GImage img, int startX, int startY) {
         StringBuilder sb = new StringBuilder();
@@ -31,16 +95,28 @@ public class ChainCode {
                 ahead = moveAgent(cur, nextDirs[i]);
                 //System.out.println("Pa : " + ahead.x + " " + ahead.y + " " + img.getRGB(ahead.x, ahead.y));
                 if (!isWater(img.getRGB(ahead.x, ahead.y))) {
-                    Point leftPoint = getLeftSidePoint(ahead, nextDirs[i]);
+                    Point[] leftPoint = getLeftSidePoint(ahead, nextDirs[i]);
                     //System.out.println("Pl : " + leftPoint.x + " " + leftPoint.y + " " + img.getRGB(leftPoint.x, leftPoint.y));
-                    if (isValidIsland(img.getRGB(ahead.x, ahead.y), img.getRGB(leftPoint.x, leftPoint.y))) {
+                    if (isValidIsland(img.getRGB(ahead.x, ahead.y), img.getRGB(leftPoint[0].x, leftPoint[0].y))) {
                         sb.append(nextDirs[i]);
                         isValid = true;
                         cur = ahead;
                         curDir = nextDirs[i];
                         //System.out.println("curDir = " + curDir);
                     } else {
-                        i++;
+                        if (leftPoint.length == 2) {
+                            if (isValidIsland(img.getRGB(ahead.x, ahead.y), img.getRGB(leftPoint[1].x, leftPoint[1].y))) {
+                                sb.append(nextDirs[i]);
+                                isValid = true;
+                                cur = ahead;
+                                curDir = nextDirs[i];
+                                //System.out.println("curDir = " + curDir);
+                            } else {
+                                i++;
+                            }
+                        } else {
+                            i++;
+                        }
                     }
                 } else {
                     i++;
@@ -62,11 +138,17 @@ public class ChainCode {
         return colA.getRed() != colB.getRed();
     }
 
-    private static Point getLeftSidePoint(Point p, int direction) {
+    private static Point[] getLeftSidePoint(Point p, int direction) {
+        Point[] retP;
         if (direction == 0 || direction == 2 || direction == 4 || direction == 6) {
-            return moveAgent(p, (direction + 2) % 8);
+            retP = new Point[1];
+            retP[0] = moveAgent(p, (direction + 2) % 8);
+            return retP;
         } else {
-            return moveAgent(p, (direction + 1) % 8);
+            retP = new Point[2];
+            retP[0] = moveAgent(p, (direction + 1) % 8);
+            retP[1] = moveAgent(p, (direction + 3) % 8);
+            return retP;
         }
     }
 

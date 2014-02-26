@@ -266,14 +266,24 @@ public class MainForm extends javax.swing.JFrame {
         SettingKetetanggaanDialog dialog = new SettingKetetanggaanDialog(this, true);
         dialog.setVisible(true);
         GImage editImage = null;
+        GImage editImage2 = null;
         try {
             editImage = new GImage(ImageIO.read(lastFile));
+            editImage2 = new GImage(ImageIO.read(lastFile));
         } catch (IOException ex) {
             Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        ImageHelper.transformasiSpasial(editImage, dialog.getwArray());
+        if (dialog.is2Table) {
+            ImageHelper.transformasiSpasial(editImage, dialog.getwArray());
+            loadPicture(lastFile.getName(), editImage.getBufImage());
+            ImageHelper.transformasiSpasial(editImage2, dialog.getwArray2());
+            loadPicture(lastFile.getName(), editImage2.getBufImage());
+            ImageHelper.combineGradien(editImage,editImage2);
+            loadPicture(lastFile.getName(), editImage.getBufImage());
+        } else {
+            ImageHelper.transformasiSpasial(editImage, dialog.getwArray());
         loadPicture(lastFile.getName(), editImage.getBufImage());
+        }
         dialog.dispose();
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
@@ -290,7 +300,7 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-         GImage editImage = null;
+        GImage editImage = null;
         try {
             editImage = new GImage(ImageIO.read(lastFile));
         } catch (IOException ex) {
@@ -299,10 +309,10 @@ public class MainForm extends javax.swing.JFrame {
 
         ArrayList<String> res = ImageHelper.getChainCodes(editImage);
         for (int i = 0; i < res.size(); i++) {
-            System.out.println(res.get(i));
+            new ChainCode(res.get(i)).print();
         }
-        
-        loadPicture(lastFile.getName(), editImage.getBufImage());
+
+        //loadPicture(lastFile.getName(), editImage.getBufImage());
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void loadTranformasiSpasial(int type) {
@@ -373,7 +383,7 @@ public class MainForm extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
