@@ -10,18 +10,18 @@ package ui;
  */
 public class SettingKetetanggaanDialog extends javax.swing.JDialog {
 
-    private int[] wArray;
-    private int[] wArray2;
+    private float[] wArray;
+    private float[] wArray2;
     public boolean is2Table = false;
-    
+
     /**
      * Creates new form SettingKetetanggaanDialog
      */
     public SettingKetetanggaanDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        wArray = new int[9];
-        wArray2 = new int[9];
+        wArray = new float[9];
+        wArray2 = new float[9];
     }
 
     /**
@@ -57,6 +57,7 @@ public class SettingKetetanggaanDialog extends javax.swing.JDialog {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -127,11 +128,33 @@ public class SettingKetetanggaanDialog extends javax.swing.JDialog {
             }
         });
 
-        jButton2.setText("jButton1");
+        jButton2.setText("Robert");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("jButton1");
+        jButton3.setText("Prewit");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
-        jButton4.setText("jButton1");
+        jButton4.setText("Scharr");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setText("Akar 2");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -141,54 +164,60 @@ public class SettingKetetanggaanDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(w3, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(w0, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
-                            .addComponent(w6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(w7)
-                            .addComponent(w4, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(w1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(w8, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
-                            .addComponent(w5)
-                            .addComponent(w2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(loadSobel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jButton4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
-                        .addComponent(btnOK, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(w3, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(w0, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                                    .addComponent(w6))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(w7)
+                                    .addComponent(w4, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(w1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(w8, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+                                    .addComponent(w5)
+                                    .addComponent(w2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(loadSobel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(w12, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(w9, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(w15, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(w13, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(w10, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(w16))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(w14)
+                                    .addComponent(w11, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(w17, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(btnOK1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(1, 1, 1)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(w12, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(w9, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(w15, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(w13, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(w10, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(w16))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(w14)
-                            .addComponent(w11, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(w17, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnOK1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -207,9 +236,7 @@ public class SettingKetetanggaanDialog extends javax.swing.JDialog {
                             .addComponent(w6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(w7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(w8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                        .addComponent(jButton4))
+                            .addComponent(jButton3)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(w9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -224,13 +251,16 @@ public class SettingKetetanggaanDialog extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(w15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(w16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(w17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(w17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton4)
+                    .addComponent(jButton5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnOK)
                     .addComponent(btnOK1))
-                .addContainerGap())
+                .addGap(14, 14, 14))
         );
 
         pack();
@@ -240,26 +270,24 @@ public class SettingKetetanggaanDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_w2ActionPerformed
 
-    public int[] getwArray() {
+    public float[] getwArray() {
         return wArray;
     }
 
-    public int[] getwArray2() {
+    public float[] getwArray2() {
         return wArray2;
     }
-    
-    
-    
+
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
-        wArray[0] = Integer.parseInt(w0.getText());
-        wArray[1] = Integer.parseInt(w1.getText());
-        wArray[2] = Integer.parseInt(w2.getText());
-        wArray[3] = Integer.parseInt(w3.getText());
-        wArray[4] = Integer.parseInt(w4.getText());
-        wArray[5] = Integer.parseInt(w5.getText());
-        wArray[6] = Integer.parseInt(w6.getText());
-        wArray[7] = Integer.parseInt(w7.getText());
-        wArray[8] = Integer.parseInt(w8.getText());
+        wArray[0] = Float.parseFloat(w0.getText());
+        wArray[1] = Float.parseFloat(w1.getText());
+        wArray[2] = Float.parseFloat(w2.getText());
+        wArray[3] = Float.parseFloat(w3.getText());
+        wArray[4] = Float.parseFloat(w4.getText());
+        wArray[5] = Float.parseFloat(w5.getText());
+        wArray[6] = Float.parseFloat(w6.getText());
+        wArray[7] = Float.parseFloat(w7.getText());
+        wArray[8] = Float.parseFloat(w8.getText());
         this.setVisible(false);
     }//GEN-LAST:event_btnOKActionPerformed
 
@@ -268,50 +296,101 @@ public class SettingKetetanggaanDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_w11ActionPerformed
 
     private void btnOK1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOK1ActionPerformed
-        wArray[0] = Integer.parseInt(w0.getText());
-        wArray[1] = Integer.parseInt(w1.getText());
-        wArray[2] = Integer.parseInt(w2.getText());
-        wArray[3] = Integer.parseInt(w3.getText());
-        wArray[4] = Integer.parseInt(w4.getText());
-        wArray[5] = Integer.parseInt(w5.getText());
-        wArray[6] = Integer.parseInt(w6.getText());
-        wArray[7] = Integer.parseInt(w7.getText());
-        wArray[8] = Integer.parseInt(w8.getText());
-        wArray2[0] = Integer.parseInt(w9.getText());
-        wArray2[1] = Integer.parseInt(w10.getText());
-        wArray2[2] = Integer.parseInt(w11.getText());
-        wArray2[3] = Integer.parseInt(w12.getText());
-        wArray2[4] = Integer.parseInt(w13.getText());
-        wArray2[5] = Integer.parseInt(w14.getText());
-        wArray2[6] = Integer.parseInt(w15.getText());
-        wArray2[7] = Integer.parseInt(w16.getText());
-        wArray2[8] = Integer.parseInt(w17.getText());
+        wArray[0] = Float.parseFloat(w0.getText());
+        wArray[1] = Float.parseFloat(w1.getText());
+        wArray[2] = Float.parseFloat(w2.getText());
+        wArray[3] = Float.parseFloat(w3.getText());
+        wArray[4] = Float.parseFloat(w4.getText());
+        wArray[5] = Float.parseFloat(w5.getText());
+        wArray[6] = Float.parseFloat(w6.getText());
+        wArray[7] = Float.parseFloat(w7.getText());
+        wArray[8] = Float.parseFloat(w8.getText());
+        wArray2[0] = Float.parseFloat(w9.getText());
+        wArray2[1] = Float.parseFloat(w10.getText());
+        wArray2[2] = Float.parseFloat(w11.getText());
+        wArray2[3] = Float.parseFloat(w12.getText());
+        wArray2[4] = Float.parseFloat(w13.getText());
+        wArray2[5] = Float.parseFloat(w14.getText());
+        wArray2[6] = Float.parseFloat(w15.getText());
+        wArray2[7] = Float.parseFloat(w16.getText());
+        wArray2[8] = Float.parseFloat(w17.getText());
 
         this.is2Table = true;
         this.setVisible(false);
     }//GEN-LAST:event_btnOK1ActionPerformed
 
     private void loadSobelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadSobelActionPerformed
-        w0.setText("1");
-        w1.setText("2");
-        w2.setText("1");
-        w3.setText("0");
-        w4.setText("0");
-        w5.setText("0");
-        w6.setText("-1");
-        w7.setText("-2");
-        w8.setText("-1");
-        
-        w9.setText("-1");
-        w10.setText("0");
-        w11.setText("1");
-        w12.setText("-2");
-        w13.setText("0");
-        w14.setText("2");
-        w15.setText("-1");
-        w16.setText("0");
-        w17.setText("1");
+        String[] sobelKernel = {"-1", "0", "1",  
+                                 "-2", "0", "2", 
+                                 "-1", "0", "1", 
+                                 
+                                 "1", "2", "1", 
+                                 "0", "0", "0", 
+                                 "-1", "-2", "-1"};
+        setTextField(sobelKernel);
     }//GEN-LAST:event_loadSobelActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String[] robertKernel = {"1", "0", "0", "0", "-1", "0", "0", "0", "0", "0", "0", "1", "0", "-1", "0", "0", "0", "0"};
+        setTextField(robertKernel);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        String[] prewitKernel = {"-1", "0", "1",  
+                                 "-1", "0", "1", 
+                                 "-1", "0", "1", 
+                                 
+                                 "1", "1", "1", 
+                                 "0", "0", "0", 
+                                 "-1", "-1", "-1"};
+        setTextField(prewitKernel);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        String[] prewitKernel = {"3", "0", "3",  
+                                 "10", "0", "10", 
+                                 "3", "0", "3", 
+                                 
+                                 "3", "10", "3", 
+                                 "0", "0", "0", 
+                                 "3", "10", "3"};
+        setTextField(prewitKernel);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        //ini siapa?
+        String[] akar2Kernel = {"-1", "0", "1",  
+                                 "-1.4142", "0", "1.4142", 
+                                 "-1", "0", "1", 
+                                 
+                                 "1", "1.4142", "1", 
+                                 "0", "0", "0", 
+                                 "-1", "-1.4142", "-1"};
+        setTextField(akar2Kernel);
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void setTextField(String[] weights) {
+        w0.setText(weights[0]);
+        w1.setText(weights[1]);
+        w2.setText(weights[2]);
+        w3.setText(weights[3]);
+        w4.setText(weights[4]);
+        w5.setText(weights[5]);
+        w6.setText(weights[6]);
+        w7.setText(weights[7]);
+        w8.setText(weights[8]);
+        if (weights.length > 9) {
+            w9.setText(weights[9]);
+            w10.setText(weights[10]);
+            w11.setText(weights[11]);
+            w12.setText(weights[12]);
+            w13.setText(weights[13]);
+            w14.setText(weights[14]);
+            w15.setText(weights[15]);
+            w16.setText(weights[16]);
+            w17.setText(weights[17]);
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -360,6 +439,7 @@ public class SettingKetetanggaanDialog extends javax.swing.JDialog {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JButton loadSobel;
     private javax.swing.JTextField w0;
     private javax.swing.JTextField w1;

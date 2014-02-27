@@ -70,6 +70,22 @@ public class ChainCode {
         }
     }
 
+    public String getCodes() {
+        return codes;
+    }
+
+    public int[] getFrequency() {
+        return frequency;
+    }
+
+    public int[] getFrequencyPercentage() {
+        return frequencyPercentage;
+    }
+
+    public String getShape() {
+        return shape;
+    }
+    
     public void print() {
         System.out.println("codes = " + codes);
         for (int i = 0; i < 8; i++) {

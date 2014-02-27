@@ -37,7 +37,7 @@ public class ImageHelper {
         }
     }
 
-    public static void transformasiSpasial(GImage gimage, int[] weight) {
+    public static void transformasiSpasial(GImage gimage, float[] weight) {
         GImage copy = new GImage(deepCopy(gimage.getBufImage()));
         for (int i = 1; i < gimage.getBufImage().getHeight() - 1; i++) {
             for (int j = 1; j < gimage.getBufImage().getWidth() - 1; j++) {
@@ -56,7 +56,7 @@ public class ImageHelper {
         return pixelArray;
     }
 
-    private static Color calcAdjArray(Color[][] pixelArray, int[] weight) {
+    private static Color calcAdjArray(Color[][] pixelArray, float[] weight) {
         int tColR = 0;
         int tColG = 0;
         int tColB = 0;
@@ -66,9 +66,9 @@ public class ImageHelper {
         int iWeight = 0;
         for (int k = 0; k < 3; k++) {
             for (int l = 0; l < 3; l++) {
-                tColR = pixelArray[k][l].getRed() * weight[iWeight];
-                tColG = pixelArray[k][l].getGreen() * weight[iWeight];
-                tColB = pixelArray[k][l].getBlue() * weight[iWeight];
+                tColR = (int) (pixelArray[k][l].getRed() * weight[iWeight]);
+                tColG = (int) (pixelArray[k][l].getGreen() * weight[iWeight]);
+                tColB = (int) (pixelArray[k][l].getBlue() * weight[iWeight]);
                 iWeight++;
                 sumPlusR += tColR;
                 sumPlusG += tColG;
@@ -101,7 +101,7 @@ public class ImageHelper {
      */
     private static Color calcAdjArray(Color[][] pixelArray, int processType) {
         switch (processType) {
-            case 1: {
+            case 1: { // minimum
                 Color max = pixelArray[0][0];
                 int maxR = max.getRed();
                 int maxG = max.getGreen();
@@ -126,7 +126,7 @@ public class ImageHelper {
                 max = new Color(maxR, maxG, maxB);
                 return max;
             }
-            case 2: {
+            case 2: { //maximum
                 Color max = pixelArray[0][0];
                 int maxR = max.getRed();
                 int maxG = max.getGreen();
@@ -151,7 +151,7 @@ public class ImageHelper {
                 max = new Color(maxR, maxG, maxB);
                 return max;
             }
-            case 3: {
+            case 3: { //rata2
                 int sumR = 0;
                 int sumG = 0;
                 int sumB = 0;
@@ -164,6 +164,59 @@ public class ImageHelper {
                     }
                 }
                 return new Color((sumR / 9), (sumG / 9), (sumB / 9));
+            }
+            case 4: { //homogen
+                Color max = pixelArray[0][0];
+                Color temp = pixelArray[1][1];
+                int maxR = Math.abs(max.getRed() - temp.getRed());
+                int maxG = Math.abs(max.getGreen() - temp.getGreen());
+                int maxB = Math.abs(max.getBlue() - temp.getBlue());
+                for (int k = 0; k < 3; k++) {
+                    for (int l = 0; l < 3; l++) {
+                        if (!(k == 1 && l == 1)) {
+                            Color pixel = pixelArray[k][l];
+                            int currR = Math.abs(pixel.getRed() - temp.getRed());
+                            int currG = Math.abs(pixel.getGreen() - temp.getGreen());
+                            int currB = Math.abs(pixel.getBlue() - temp.getBlue());
+                            if (maxR < currR) {
+                                maxR = currR;
+                            }
+                            if (maxG < currG) {
+                                maxG = currG;
+                            }
+                            if (maxB < currB) {
+                                maxB = currB;
+                            }
+                        }
+                    }
+                }
+                max = new Color(maxR, maxG, maxB);
+                return max;
+            }
+            case 5: { //difference
+                Color max = pixelArray[0][1];
+                Color temp = pixelArray[2][1];
+                int maxR = Math.abs(max.getRed() - temp.getRed());
+                int maxG = Math.abs(max.getGreen() - temp.getGreen());
+                int maxB = Math.abs(max.getBlue() - temp.getBlue());
+                for (int k = 0; k < 3; k++) {
+                    max = pixelArray[k][0];
+                    temp = pixelArray[2 - k][2];
+                    int currR = Math.abs(max.getRed() - temp.getRed());
+                    int currG = Math.abs(max.getGreen() - temp.getGreen());
+                    int currB = Math.abs(max.getBlue() - temp.getBlue());
+                    if (maxR < currR) {
+                        maxR = currR;
+                    }
+                    if (maxG < currG) {
+                        maxG = currG;
+                    }
+                    if (maxB < currB) {
+                        maxB = currB;
+                    }
+                }
+                max = new Color(maxR, maxG, maxB);
+                return max;
             }
         }
         return pixelArray[1][1];
@@ -390,7 +443,7 @@ public class ImageHelper {
     }
 
     public static void combineGradien(GImage img1, GImage img2) {
-        for (int i = 0; i < img1.getHeight() ; i++) {
+        for (int i = 0; i < img1.getHeight(); i++) {
             for (int j = 0; j < img1.getWidth(); j++) {
                 Color col1 = img1.getRGB(j, i);
                 Color col2 = img2.getRGB(j, i);
@@ -398,7 +451,7 @@ public class ImageHelper {
             }
         }
     }
-    
+
     private static Color combineColor(Color col1, Color col2) {
         int red1 = col1.getRed();
         int red2 = col2.getRed();
@@ -407,20 +460,20 @@ public class ImageHelper {
         int blue1 = col1.getBlue();
         int blue2 = col2.getBlue();
         return new Color(
-                calcDistLikePhytagoras(red1, red2), 
-                calcDistLikePhytagoras(green1, green2), 
+                calcDistLikePhytagoras(red1, red2),
+                calcDistLikePhytagoras(green1, green2),
                 calcDistLikePhytagoras(blue1, blue2));
     }
-    
+
     private static int calcDistLikePhytagoras(int num1, int num2) {
         //System.out.println("num1 = " + num1);
         //System.out.println("num2 = " + num2);
         int count = (int) Math.sqrt((num1 * num1) + (num2 * num2));
         //System.out.println("count = " + count);
-        if(count > 255) {
+        if (count > 255) {
             return 255;
         }
-        if(count < 0) {
+        if (count < 0) {
             return 0;
         }
         return count;

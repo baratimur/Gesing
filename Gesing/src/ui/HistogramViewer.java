@@ -27,7 +27,7 @@ public class HistogramViewer extends JPanel {
     public HistogramViewer(int[] histogramData, Color color) {
         this.histogramData = histogramData;
         this.color = color;
-        int width = (256 * MIN_BAR_WIDTH) + 11;
+        int width = (histogramData.length * MIN_BAR_WIDTH) + 11;
         Dimension minSize = new Dimension(width, 128);
         Dimension prefSize = new Dimension(width, 256);
         setMinimumSize(minSize);
@@ -47,12 +47,12 @@ public class HistogramViewer extends JPanel {
             g2d.drawRect(xOffset, yOffset, width, height);
             int barWidth = Math.max(MIN_BAR_WIDTH,
                     (int) Math.floor((float) width
-                    / (float) 256));
+                    / (float) histogramData.length));
             //System.out.println("width = " + width + "; size = "
             //        + 256 + "; barWidth = " + barWidth);
             int maxValue = 0;
 
-            for (int j = 0; j < 256; j++) {
+            for (int j = 0; j < histogramData.length; j++) {
                 if (histogramData[j] > maxValue) {
                     maxValue = histogramData[j];
                 }
@@ -60,7 +60,7 @@ public class HistogramViewer extends JPanel {
 
 
             int xPos = xOffset;
-            for (int j = 0; j < 256; j++) {
+            for (int j = 0; j < histogramData.length; j++) {
                 int value = histogramData[j];
                 int barHeight = Math.round(((float) value
                         / (float) maxValue) * height);

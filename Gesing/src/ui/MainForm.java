@@ -66,6 +66,8 @@ public class MainForm extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem11 = new javax.swing.JMenuItem();
+        jMenuItem12 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
@@ -75,6 +77,7 @@ public class MainForm extends javax.swing.JFrame {
         jMenuItem10 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Gesing - Image Processing");
 
         jMenu1.setText("File");
 
@@ -131,6 +134,22 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
         jMenu4.add(jMenuItem1);
+
+        jMenuItem11.setText("Homogen");
+        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem11ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem11);
+
+        jMenuItem12.setText("Difference");
+        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem12ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem12);
 
         jMenuItem8.setText("Weight Table");
         jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
@@ -267,19 +286,21 @@ public class MainForm extends javax.swing.JFrame {
         dialog.setVisible(true);
         GImage editImage = null;
         GImage editImage2 = null;
+        GImage editImage3 = null;
         try {
             editImage = new GImage(ImageIO.read(lastFile));
-            editImage2 = new GImage(ImageIO.read(lastFile));
+            editImage2 = new GImage(ImageHelper.deepCopy(editImage.getBufImage()));
         } catch (IOException ex) {
             Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (dialog.is2Table) {
             ImageHelper.transformasiSpasial(editImage, dialog.getwArray());
-            loadPicture(lastFile.getName(), editImage.getBufImage());
+            editImage3 = new GImage(ImageHelper.deepCopy(editImage.getBufImage()));
+            loadPicture(lastFile.getName() + "-kernel-L", editImage.getBufImage());
             ImageHelper.transformasiSpasial(editImage2, dialog.getwArray2());
-            loadPicture(lastFile.getName(), editImage2.getBufImage());
-            ImageHelper.combineGradien(editImage,editImage2);
-            loadPicture(lastFile.getName(), editImage.getBufImage());
+            loadPicture(lastFile.getName() + "-kernel-R", editImage2.getBufImage());
+            ImageHelper.combineGradien(editImage3,editImage2);
+            loadPicture(lastFile.getName() + "-combine", editImage3.getBufImage());
         } else {
             ImageHelper.transformasiSpasial(editImage, dialog.getwArray());
         loadPicture(lastFile.getName(), editImage.getBufImage());
@@ -308,12 +329,24 @@ public class MainForm extends javax.swing.JFrame {
         }
 
         ArrayList<String> res = ImageHelper.getChainCodes(editImage);
+        ArrayList<ChainCode> listC =  new ArrayList<>();
         for (int i = 0; i < res.size(); i++) {
-            new ChainCode(res.get(i)).print();
+            listC.add(new ChainCode(res.get(i)));
         }
 
         //loadPicture(lastFile.getName(), editImage.getBufImage());
+        ChainCodeView view = new ChainCodeView(listC);
+        desktopPane.add(view);
+        view.setVisible(true);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+        loadTranformasiSpasial(4);
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
+
+    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+        loadTranformasiSpasial(5);
+    }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     private void loadTranformasiSpasial(int type) {
         GImage editImage = null;
@@ -401,6 +434,8 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem11;
+    private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
